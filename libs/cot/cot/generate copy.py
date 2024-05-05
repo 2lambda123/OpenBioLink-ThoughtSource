@@ -108,7 +108,8 @@ def _generate_and_extract(
     # generate chain of thoughts and extract answers
     for instruction_key in instruction_keys:
         template_dict["instruction"] = get_fragments_value(
-            "instructions", instruction_key)
+            "instructions", instruction_key
+        )
 
         for cot_trigger_key in cot_trigger_keys:
             generated_cot = {
@@ -135,11 +136,11 @@ def _generate_and_extract(
             }
 
             template_dict["cot_trigger"] = get_fragments_value(
-                "cot_triggers", cot_trigger_key)
+                "cot_triggers", cot_trigger_key
+            )
 
             # change template_cot_generation to generated_cot["cot_trigger_template"] to make it more logical
-            generate_cot_prompt = format_prompt(
-                template_cot_generation, template_dict)
+            generate_cot_prompt = format_prompt(template_cot_generation, template_dict)
 
             if verbose:
                 print("\n-----------------COT TRIGGER TEXT-----------------")
@@ -182,13 +183,16 @@ def _generate_and_extract(
                     }
 
                     template_dict["answer_extraction"] = get_fragments_value(
-                        "answer_extractions", answer_extraction_key)
+                        "answer_extractions", answer_extraction_key
+                    )
                     answer_extraction_prompt = format_prompt(
-                        template_answer_extraction, template_dict)
+                        template_answer_extraction, template_dict
+                    )
 
                     if verbose:
                         print(
-                            "\n----------------ANSWER EXTRACTION TEXT----------------")
+                            "\n----------------ANSWER EXTRACTION TEXT----------------"
+                        )
                         print(answer_extraction_prompt)
 
                     predicted_answer = query_model(
@@ -200,8 +204,7 @@ def _generate_and_extract(
                         api_time_interval,
                     )
                     if verbose:
-                        print(
-                            "\n------------------EXTRACTED ANSWER-------------------")
+                        print("\n------------------EXTRACTED ANSWER-------------------")
                         print(predicted_answer)
 
                     answer["answer"] = predicted_answer
@@ -218,7 +221,8 @@ def _generate_and_extract(
 
 def full_text_prompts(dataset, prompt_text=True, answer_extraction_text=True):
     assert isinstance(
-        dataset, ds.arrow_dataset.Dataset), "dataset must be an arrow dataset"
+        dataset, ds.arrow_dataset.Dataset
+    ), "dataset must be an arrow dataset"
 
     dataset = dataset.map(
         _full_text_prompts,
@@ -258,13 +262,16 @@ def _full_text_prompts(item, prompt_text, answer_extraction_text):
         # generate chain of thoughts and extract answers
         # for instruction_key in instruction_keys:
         template_dict["instruction"] = get_fragments_value(
-            "instructions", generated_cot["instruction"])
+            "instructions", generated_cot["instruction"]
+        )
 
         template_dict["cot_trigger"] = get_fragments_value(
-            "cot_triggers", generated_cot["cot_trigger"])
+            "cot_triggers", generated_cot["cot_trigger"]
+        )
 
         generate_cot_prompt = format_prompt(
-            generated_cot["cot_trigger_template"], template_dict)
+            generated_cot["cot_trigger_template"], template_dict
+        )
 
         template_dict["cot"] = generated_cot["cot"]
         # Everything above could also be relevant for the answer extraction
@@ -283,9 +290,11 @@ def _full_text_prompts(item, prompt_text, answer_extraction_text):
 
                 else:
                     template_dict["answer_extraction"] = get_fragments_value(
-                        "answer_extractions", answer["answer_extraction"])
+                        "answer_extractions", answer["answer_extraction"]
+                    )
                     answer_extraction_prompt = format_prompt(
-                        answer["answer_extraction_template"], template_dict)
+                        answer["answer_extraction_template"], template_dict
+                    )
 
                     answer["answer_extraction_text"] = answer_extraction_prompt
 
@@ -318,7 +327,8 @@ def _keep_generated_cots(item, authors=None):
         item["generated_cot"] = []
     else:
         item["generated_cot"] = [
-            cot for cot in item["generated_cot"] if cot["author"] in authors]
+            cot for cot in item["generated_cot"] if cot["author"] in authors
+        ]
         # for deletion we could use "... not in authors" instead of "in authors"
 
     return item
@@ -347,7 +357,9 @@ def multiple_choice_answer_formatting(answer_choices):
 
     # Adding Letters (A,B,C,...) for the given multiple choice answers.
     # 65 is the ASCII code for A
-    return "\n".join([f"{chr(65+i)}) {example}" for i, example in enumerate(answer_choices)])
+    return "\n".join(
+        [f"{chr(65+i)}) {example}" for i, example in enumerate(answer_choices)]
+    )
 
 
 def get_fragments_value(str, key):
@@ -419,8 +431,7 @@ def query_model(input, api_service, engine, temperature, max_tokens, api_time_in
                 llm=HuggingFaceHub(
                     # parameter options: https://huggingface.co/docs/api-inference/detailed_parameters
                     repo_id=engine,
-                    model_kwargs={"temperature": temperature,
-                                  "max_length": max_tokens},
+                    model_kwargs={"temperature": temperature, "max_length": max_tokens},
                     # type: ignore (suppress pylance error)
                 ),
             )
