@@ -84,20 +84,20 @@ def _generate_and_extract(
     :param item: the item (example) of a dataset to be processed
     :param idx: the index of the item in the dataset
     other parameters are handed over from config and are described in config.py
-    :param # all of the following variables will be defined by the config_as_dataclass objectidx_range: 
-    :param author: 
-    :param api_service: 
-    :param engine: 
-    :param temperature: 
-    :param max_tokens: 
-    :param api_time_interval: 
-    :param instruction_keys: 
-    :param cot_trigger_keys: 
-    :param template_cot_generation: 
-    :param answer_extraction_keys: 
-    :param template_answer_extraction: 
-    :param warn: 
-    :param verbose: 
+    :param # all of the following variables will be defined by the config_as_dataclass objectidx_range:
+    :param author:
+    :param api_service:
+    :param engine:
+    :param temperature:
+    :param max_tokens:
+    :param api_time_interval:
+    :param instruction_keys:
+    :param cot_trigger_keys:
+    :param template_cot_generation:
+    :param answer_extraction_keys:
+    :param template_answer_extraction:
+    :param warn:
+    :param verbose:
     :returns: item populated with various fields
 
     """
@@ -234,7 +234,7 @@ def _generate_and_extract(
 def full_text_prompts(dataset, prompt_text=True, answer_extraction_text=True):
     """
 
-    :param dataset: 
+    :param dataset:
     :param prompt_text:  (Default value = True)
     :param answer_extraction_text:  (Default value = True)
 
@@ -261,9 +261,9 @@ def full_text_prompts(dataset, prompt_text=True, answer_extraction_text=True):
 def _full_text_prompts(item, prompt_text, answer_extraction_text):
     """
 
-    :param item: 
-    :param prompt_text: 
-    :param answer_extraction_text: 
+    :param item:
+    :param prompt_text:
+    :param answer_extraction_text:
 
     """
     # predefine values in template dictionary that stay same over all runs of the current item
@@ -332,7 +332,7 @@ def keep_generated_cots(dataset, authors=None):
 
     :param authors: A list of authors of the pregenerated COTS to delete. If None, all of the pregenerated COTS are kept.
     if "all", all of the pregenerated COTS are deleted. (Default value = None)
-    :param dataset: 
+    :param dataset:
 
     """
     # Unfortunately the loading function of the datasets does not let you specify which pregenerated COTS to load
@@ -353,7 +353,7 @@ def keep_generated_cots(dataset, authors=None):
 def _keep_generated_cots(item, authors=None):
     """
 
-    :param item: 
+    :param item:
     :param authors:  (Default value = None)
 
     """
@@ -388,7 +388,7 @@ def print_now(return_flag=0):
 def multiple_choice_answer_formatting(answer_choices):
     """Transforms a list of answer choices into a string with letters (A,B,C,...) for each answer choice.
 
-    :param answer_choices: 
+    :param answer_choices:
 
     """
     # only supports uppercase letters at the moment, as this is current standard
@@ -403,8 +403,8 @@ def multiple_choice_answer_formatting(answer_choices):
 def get_fragments_value(str, key):
     """
 
-    :param str: 
-    :param key: 
+    :param str:
+    :param key:
 
     """
     if key is None:
@@ -416,8 +416,8 @@ def get_fragments_value(str, key):
 def format_prompt(template, dictionary):
     """
 
-    :param template: 
-    :param dictionary: 
+    :param template:
+    :param dictionary:
 
     """
     output = template.format_map(Correct_output(dictionary))
@@ -450,12 +450,12 @@ class Correct_output(dict):
 def query_model(input, api_service, engine, temperature, max_tokens, api_time_interval):
     """
 
-    :param input: 
-    :param api_service: 
-    :param engine: 
-    :param temperature: 
-    :param max_tokens: 
-    :param api_time_interval: 
+    :param input:
+    :param api_service:
+    :param engine:
+    :param temperature:
+    :param max_tokens:
+    :param api_time_interval:
 
     """
     if api_service == "mock_api":
