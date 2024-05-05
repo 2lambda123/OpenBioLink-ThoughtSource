@@ -1,6 +1,6 @@
 # ThoughtSource⚡ Dataset Viewer
 
-*You can browse datasets on the hosted version of [ThoughtSource Dataset Viewer](http://thought.samwald.info).*
+_You can browse datasets on the hosted version of [ThoughtSource Dataset Viewer](http://thought.samwald.info)._
 
 ![Dataset viewer example](/resources/images/dataset-viewer.PNG)
 
