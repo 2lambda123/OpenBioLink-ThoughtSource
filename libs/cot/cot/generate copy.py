@@ -16,12 +16,12 @@ FRAGMENTS = json.loads(pkgutil.get_data(__name__, "fragments.json"))
 
 
 def generate_and_extract(data, config):
-    """
-    It takes a dataset and a config and generates cots for each example and extract answers.
+    """It takes a dataset and a config and generates cots for each example and extract answers.
 
     :param data: Dataset/DatasetDict - the dataset you want to generate CoTs for and extract answers
     :param config: Dictionary - the configurations of the input and model
-    :return: the dataset with generated cots and extracted answers
+    :returns: the dataset with generated cots and extracted answers
+
     """
 
     ds.disable_caching()
@@ -78,15 +78,28 @@ def _generate_and_extract(
     warn,
     verbose,
 ):
-    """
-    The function takes in a JSON object (item) and generates a CoT (Chain-of-Thought) for each combination of
+    """The function takes in a JSON object (item) and generates a CoT (Chain-of-Thought) for each combination of
     of instructions and CoT triggers. For each generated CoT and for each of the given answer extractions it extracts an answer.
 
     :param item: the item (example) of a dataset to be processed
     :param idx: the index of the item in the dataset
     other parameters are handed over from config and are described in config.py
+    :param # all of the following variables will be defined by the config_as_dataclass objectidx_range: 
+    :param author: 
+    :param api_service: 
+    :param engine: 
+    :param temperature: 
+    :param max_tokens: 
+    :param api_time_interval: 
+    :param instruction_keys: 
+    :param cot_trigger_keys: 
+    :param template_cot_generation: 
+    :param answer_extraction_keys: 
+    :param template_answer_extraction: 
+    :param warn: 
+    :param verbose: 
+    :returns: item populated with various fields
 
-    :return: item populated with various fields
     """
 
     if idx_range == "all" or (idx >= idx_range[0] and idx < idx_range[1]):
@@ -219,6 +232,13 @@ def _generate_and_extract(
 
 
 def full_text_prompts(dataset, prompt_text=True, answer_extraction_text=True):
+    """
+
+    :param dataset: 
+    :param prompt_text:  (Default value = True)
+    :param answer_extraction_text:  (Default value = True)
+
+    """
     assert isinstance(
         dataset, ds.arrow_dataset.Dataset
     ), "dataset must be an arrow dataset"
@@ -239,6 +259,13 @@ def full_text_prompts(dataset, prompt_text=True, answer_extraction_text=True):
 
 
 def _full_text_prompts(item, prompt_text, answer_extraction_text):
+    """
+
+    :param item: 
+    :param prompt_text: 
+    :param answer_extraction_text: 
+
+    """
     # predefine values in template dictionary that stay same over all runs of the current item
     template_dict = {
         "instruction": None,
@@ -304,7 +331,9 @@ def keep_generated_cots(dataset, authors=None):
     """This function handles which pregenerated COTS are deleted (after loading a collection).
 
     :param authors: A list of authors of the pregenerated COTS to delete. If None, all of the pregenerated COTS are kept.
-    if "all", all of the pregenerated COTS are deleted.
+    if "all", all of the pregenerated COTS are deleted. (Default value = None)
+    :param dataset: 
+
     """
     # Unfortunately the loading function of the datasets does not let you specify which pregenerated COTS to load
     # So we load all of them and then delete the ones we don't want
@@ -322,6 +351,12 @@ def keep_generated_cots(dataset, authors=None):
 
 
 def _keep_generated_cots(item, authors=None):
+    """
+
+    :param item: 
+    :param authors:  (Default value = None)
+
+    """
     if authors is None:
         item["generated_cot"] = []
     else:
@@ -334,11 +369,11 @@ def _keep_generated_cots(item, authors=None):
 
 
 def print_now(return_flag=0):
-    """
-    It takes a flag as an argument and prints the current time in a specific format
+    """It takes a flag as an argument and prints the current time in a specific format
 
     :param return_flag: 0 = print, 1 = return, defaults to 0 (optional)
-    :return: the current time in the format of 'YYYY/MM/DD HH:MM:SS'
+    :returns: the current time in the format of 'YYYY/MM/DD HH:MM:SS'
+
     """
     now = datetime.datetime.now()
     now = now.strftime("%Y/%m/%d %H:%M:%S")
@@ -351,7 +386,11 @@ def print_now(return_flag=0):
 
 
 def multiple_choice_answer_formatting(answer_choices):
-    """Transforms a list of answer choices into a string with letters (A,B,C,...) for each answer choice."""
+    """Transforms a list of answer choices into a string with letters (A,B,C,...) for each answer choice.
+
+    :param answer_choices: 
+
+    """
     # only supports uppercase letters at the moment, as this is current standard
 
     # Adding Letters (A,B,C,...) for the given multiple choice answers.
@@ -362,6 +401,12 @@ def multiple_choice_answer_formatting(answer_choices):
 
 
 def get_fragments_value(str, key):
+    """
+
+    :param str: 
+    :param key: 
+
+    """
     if key is None:
         return None
     else:
@@ -369,6 +414,12 @@ def get_fragments_value(str, key):
 
 
 def format_prompt(template, dictionary):
+    """
+
+    :param template: 
+    :param dictionary: 
+
+    """
     output = template.format_map(Correct_output(dictionary))
     # remove leading whitespaces
     output = output.lstrip()
@@ -376,6 +427,7 @@ def format_prompt(template, dictionary):
 
 
 class Correct_output(dict):
+    """ """
     # TODO: do I ever need this? I think there will never be missing keys
     # and None keys are handled by delete_empty_curly_brackets
     def __missing__(self, key):
@@ -396,6 +448,16 @@ class Correct_output(dict):
 
 
 def query_model(input, api_service, engine, temperature, max_tokens, api_time_interval):
+    """
+
+    :param input: 
+    :param api_service: 
+    :param engine: 
+    :param temperature: 
+    :param max_tokens: 
+    :param api_time_interval: 
+
+    """
     if api_service == "mock_api":
         return " Test mock chain of thought."
         # return ("This is a " + 20 * "long " + "Mock CoT.\n")*20
