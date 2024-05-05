@@ -6,7 +6,6 @@ import uuid
 from dataclasses import asdict
 
 import datasets as ds
-
 from cot.config import Config
 
 # disable transformation (e.g. map) caching
