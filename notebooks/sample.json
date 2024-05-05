@@ -26,9 +26,7 @@
           "Tearing an object changes that object 's shape.",
           "A paper is a kind of object."
         ],
-        "answer": [
-          "There is a change in the appearance of the objects."
-        ],
+        "answer": ["There is a change in the appearance of the objects."],
         "generated_cot": [],
         "feedback": []
       }
